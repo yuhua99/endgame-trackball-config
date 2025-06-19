@@ -1,8 +1,8 @@
 #include <dt-bindings/zmk/input_transform.h>
-#include <input/processors.dtsi>
 #include <dt-bindings/zmk/matrix_transform.h>
 #include <physical_layouts.dtsi>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
+#include <input/processors.dtsi>
 
 // layers
 #define DEFAULT 0
@@ -123,28 +123,7 @@
     };
 };
 
-/ {
-  zip_button_behaviors {
-    compatible = "zmk,input-behavior-listener";
-    none: none {
-        compatible = "zmk,input-behavior-none";
-    };
-    
-    mouse_button_left: mouse_button_left {
-        compatible = "zmk,input-behavior-mouse-button";
-        button = <INPUT_BTN_LEFT>;
-    };
-    
-    mouse_button_right: mouse_button_right {
-        compatible = "zmk,input-behavior-mouse-button";
-        button = <INPUT_BTN_RIGHT>;
-    };
-    
-    mouse_button_middle: mouse_button_middle {
-        compatible = "zmk,input-behavior-mouse-button";
-        button = <INPUT_BTN_MIDDLE>;
-    };
-  };  
+/ {  
   trackball_primary_listener: trackball_primary_listener {
     compatible = "zmk,input-listener";
     device = <&trackball_primary>;

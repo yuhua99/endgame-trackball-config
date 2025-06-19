@@ -1,6 +1,6 @@
 file_format: "1"
-id: trackball_rev01
-name: trackball_rev01
+id: trbl_rev01
+name: trbl_rev01
 type: shield
 url: https://github.com/taichan1113/mouse-test
 requires: [efogtech_trackball_0]
