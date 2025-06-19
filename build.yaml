@@ -18,3 +18,7 @@
 #     artifact-name: corne_left_with_studio
 #
 ---
+include:
+  - board: efogtech_trackball_0
+    shield: trackball-rev01
+    cmake-args: -DCONFIG_ZMK_STUDIO=y

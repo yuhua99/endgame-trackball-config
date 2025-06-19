@@ -1,0 +1,3 @@
+config BOARD_EFOGTECH_TRBL_52833
+    bool "efogtech_trackball_0"
+    depends on SOC_NRF52833_QIAA

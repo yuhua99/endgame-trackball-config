@@ -1,0 +1,28 @@
+# Electronut Labs Papyr board configuration
+
+# Copyright (c) 2020 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+if BOARD_EFOGTECH_TRBL_52833
+
+config BOARD
+    default "efogtech_trackball_0"
+
+if USB_DEVICE_STACK
+
+config USB_NRFX
+    default y
+
+endif # USB_DEVICE_STACK
+
+config BT_CTLR
+    default BT
+
+if BOARD_EFOGTECH_TRBL_52833
+
+config BOARD_NRFMICRO_CHARGER
+    default n
+
+endif # BOARD_EFOGTECH_TRBL_52833
+
+endif # BOARD_EFOGTECH_TRBL_52833

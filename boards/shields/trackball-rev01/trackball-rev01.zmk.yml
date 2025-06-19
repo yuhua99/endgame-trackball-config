@@ -1,0 +1,10 @@
+file_format: "1"
+id: trackball-rev01
+name: trackball-rev01
+type: shield
+url: https://github.com/taichan1113/mouse-test
+requires: [efogtech_trackball_0]
+features:
+  - keys
+  - pointer
+  - studio
