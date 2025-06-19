@@ -23,7 +23,7 @@
     leds {
         compatible = "gpio-leds";
         blue_led: led_0 {
-            gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
+            gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>;
         };
     };
 
@@ -33,6 +33,34 @@
         output-ohms = <160000>;
         full-ohms = <(160000 + 160000)>;
     };
+
+    left_encoder: encoder_left {
+        compatible = "alps,ec11";
+        a-gpios = <&gpio0 17 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio0 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        steps = <80>;
+    };
+
+    right_encoder: encoder_right {
+        compatible = "alps,ec11";
+        a-gpios = <&gpio1 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio1 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        steps = <80>;
+    };
+
+    sensors: sensors {
+        compatible = "zmk,keymap-sensors";
+        sensors = <&left_encoder &right_encoder>;
+        triggers-per-rotation = <20>;
+    };
+};
+
+&left_encoder {
+    status = "okay";
+};
+
+&right_encoder {
+    status = "okay";
 };
 
 &uart0 {
@@ -67,61 +95,26 @@
     pinctrl-names = "default", "sleep";
 };
 
-&spi0 {
-    compatible = "nordic,nrf-spim";
-    status = "okay";
-    pinctrl-0 = <&spi0_default>;
-    pinctrl-1 = <&spi0_sleep>;
-    pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;
-};
-
-&spi1 {
-    compatible = "nordic,nrf-spim";
-    status = "okay";
-    pinctrl-0 = <&spi1_default>;
-    pinctrl-1 = <&spi1_sleep>;
-    pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
-};
-
 zephyr_udc0: &usbd {
     status = "okay";
 };
 
-
 &flash0 {
-    /*
-     * For more information, see:
-     * http://docs.zephyrproject.org/latest/devices/dts/flash_partitions.html
-     */
     partitions {
         compatible = "fixed-partitions";
         #address-cells = <1>;
         #size-cells = <1>;
 
         sd_partition: partition@0 {
-            reg = <0x00000000 0x00026000>;
-        };
-        code_partition: partition@26000 {
-            reg = <0x00026000 0x00046000>;
+            reg = <0x0 DT_SIZE_K(4)>;
         };
 
-        /*
-         * The flash starting at 0x0006c000 and ending at
-         * 0x00073fff is reserved for use by the application.
-         */
+        code_partition: partition@1000 {
+            reg = <DT_SIZE_K(4) DT_SIZE_K(428)>;
+        };
 
-        /*
-         * Storage partition will be used by FCB/LittleFS/NVS
-         * if enabled.
-         */
         storage_partition: partition@6c000 {
             reg = <0x0006c000 0x00008000>;
-        };
-
-        boot_partition: partition@74000 {
-            reg = <0x00074000 0x0000c000>;
         };
     };
 };

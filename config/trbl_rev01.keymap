@@ -4,8 +4,6 @@
 #include <dt-bindings/zmk/pointing.h>
 #include <dt-bindings/zmk/outputs.h>
 
-// #include <dt-bindings/zmk/mouse.h>
-
 #define DEFAULT 0
 #define SCRLM 1
 #define SCRLH 2
@@ -51,6 +49,7 @@
     compatible = "zmk,keymap";
     default_layer {
       display-name = "Default";
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
       bindings = <
         &ltm BLTH MB4 &ltm DEVICE MB5 &mkp MCLK &lth SCRLM RCLK
         &mkp LCLK                               &mto SCRLM SNIPE
@@ -58,6 +57,7 @@
     };
     scroll_tap_layer {
       display-name = "Scroll-M";
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
       bindings = <
         &trans &trans &to SCRLH &trans
         &to SCRLH               &trans
@@ -65,6 +65,7 @@
     };
     scroll_hold_layer {
       display-name = "Scroll-K";
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
       bindings = <
         &trans &trans &trans &to DEFAULT
         &trans               &to DEFAULT
@@ -72,6 +73,7 @@
     };
     device_layer {
       display-name = "Device";
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
       bindings = <
         &bootloader &trans &trans &trans
         &trans                    &bt BT_CLR
@@ -79,6 +81,7 @@
     };
     bluetooth_layer {
       display-name = "Bluetooth";
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
       bindings = <
         &trans &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2
         &bt BT_SEL 3                     &bt BT_SEL 4
@@ -86,6 +89,7 @@
     };
     snipe_layer {
       display-name = "Snipe";
+      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
       bindings = <
         &trans &trans &trans &lth SCRLM RCLK
         &trans               &to DEFAULT

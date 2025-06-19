@@ -1,9 +1,22 @@
 if SHIELD_TRACKBALL_REV01
 
 config ZMK_KEYBOARD_NAME
-    default "T"
+    default "Trackball"
 
-endif
+config EC11
+    default y
+
+endif # SHIELD_TRACKBALL_REV01
+
+if ZMK_BACKLIGHT
+
+config PWM
+    default y
+
+config LED_PWM
+    default y
+
+endif # ZMK_BACKLIGHT
 
 config SPI
 	default y

@@ -22,4 +22,6 @@ include:
   - board: efogtech_trackball_0
     shield: trbl_rev01
     cmake-args: -DCONFIG_ZMK_STUDIO=y
-    snippet: zmk-usb-logging
+    snippet:
+      - nrf52833-nosd
+      - studio-rpc-usb-uart
