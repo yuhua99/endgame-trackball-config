@@ -14,6 +14,7 @@
 
 / {
     chosen {
+        zmk,studio-rpc-uart = &uart0;
         zmk,kscan = &kscan0;
         zmk,physical-layout = &physical_layout0;
     };
@@ -22,14 +23,14 @@
         compatible = "zmk,kscan-gpio-direct";
         wakeup-source;
         input-gpios
-            = <&btns 1 (GPIO_ACTIVE_LOW)>
+            = <&btns 0 (GPIO_ACTIVE_LOW)>
+            , <&btns 1 (GPIO_ACTIVE_LOW)>
             , <&btns 2 (GPIO_ACTIVE_LOW)>
             , <&btns 3 (GPIO_ACTIVE_LOW)>
             , <&btns 4 (GPIO_ACTIVE_LOW)>
             , <&btns 5 (GPIO_ACTIVE_LOW)>
             , <&btns 6 (GPIO_ACTIVE_LOW)>
             , <&btns 7 (GPIO_ACTIVE_LOW)>
-            , <&btns 8 (GPIO_ACTIVE_LOW)>
             ;
     };
 

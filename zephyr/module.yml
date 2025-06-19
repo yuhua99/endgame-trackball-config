@@ -1,3 +1,4 @@
+name: efogtech-trackball
 build:
   settings:
     board_root: .
