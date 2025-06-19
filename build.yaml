@@ -20,5 +20,5 @@
 ---
 include:
   - board: efogtech_trackball_0
-    shield: trackball-rev01
+    shield: trackball_rev01
     cmake-args: -DCONFIG_ZMK_STUDIO=y

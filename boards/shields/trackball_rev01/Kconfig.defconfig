@@ -1,0 +1,9 @@
+if SHIELD_TRACKBALL_REV01
+
+config ZMK_KEYBOARD_NAME
+    default "trackball_rev01"
+
+endif
+
+config SPI
+	default y
