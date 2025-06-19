@@ -3,8 +3,3 @@ config BOARD_ENABLE_DCDC
     select SOC_DCDC_NRF52X
     default n
     depends on BOARD_EFOGTECH_TRBL_52833
-
-config BOARD_NRFMICRO_CHARGER
-    bool "Enable battery charger"
-    default n
-    depends on BOARD_EFOGTECH_TRBL_52833
