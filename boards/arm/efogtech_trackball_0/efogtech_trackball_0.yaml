@@ -13,3 +13,7 @@ supported:
   - ieee802154
   - pwm
   - watchdog
+  - pointing
+  - encoder
+  - backlight
+  - underglow

@@ -8,6 +8,12 @@ if BOARD_EFOGTECH_TRBL_52833
 config BOARD
     default "efogtech_trackball_0"
 
+config ZMK_KEYBOARD_NAME
+    default "Trackball"
+
+config EC11
+    default y
+
 if USB_DEVICE_STACK
 
 config USB_NRFX
@@ -15,14 +21,16 @@ config USB_NRFX
 
 endif # USB_DEVICE_STACK
 
+config PWM
+    default y
+
+config LED_PWM
+    default y
+
+config SPI
+    default y
+
 config BT_CTLR
     default BT
-
-if BOARD_EFOGTECH_TRBL_52833
-
-config BOARD_NRFMICRO_CHARGER
-    default n
-
-endif # BOARD_EFOGTECH_TRBL_52833
 
 endif # BOARD_EFOGTECH_TRBL_52833
