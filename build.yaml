@@ -24,3 +24,4 @@ include:
     snippet:
       - nrf52833-nosd
       - studio-rpc-usb-uart
+      - zmk-usb-logging

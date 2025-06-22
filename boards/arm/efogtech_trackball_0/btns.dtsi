@@ -12,6 +12,7 @@
         gpio-map-mask = <0xffffffff 0xffffffc0>;
         gpio-map-pass-thru = <0 0x3f>;
         gpio-map
+            // Buttons, top-right then counter-clockwise
             = <0 0 &gpio0 26 0>
             , <1 0 &gpio0 27 0>
             , <2 0 &gpio0 1 0>
