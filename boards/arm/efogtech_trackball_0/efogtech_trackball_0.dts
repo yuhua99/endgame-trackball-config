@@ -14,6 +14,8 @@
 #include <dt-bindings/led/led.h>
 #include "btns.dtsi"
 #include "trbl-pinctrl.dtsi"
+#include <dt-bindings/zmk/input_mixer.h>
+#include <input/processors/mixer.dtsi>
 
 #define DEFAULT 0
 #define L1 1
@@ -156,20 +158,19 @@
         };
     };
 
+    output_node {
+        compatible = "zmk,input-listener";
+        device = <&zip_mixer>;
+    };
+
     trackball_primary_listener: trackball_primary_listener {
         compatible = "zmk,input-listener";
         device = <&trackball_primary>;
-        input-processors = <&zip_xy_swap_mapper>;
 
-        dft {
+        listener {
             layers = <DEFAULT>;
-            input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT)>, <&zip_xy_swap_mapper>;
-            process-next;
-        };
-
-        snipe {
-            layers = <L5>;
-            input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT)>, <&zip_xy_swap_mapper>;
+            input-processors = <&zip_y_scaler 3 2>;
+//                               <&zip_mixer (INPUT_MIXER_Y_ONLY)>;
             process-next;
         };
     };
@@ -177,21 +178,21 @@
     trackball_secondary_listener: trackball_secondary_listener {
         compatible = "zmk,input-listener";
         device = <&trackball_secondary>;
-        input-processors = <&zip_xy_swap_mapper>;
 
-        dft {
+        listener {
             layers = <DEFAULT>;
-            input-processors = <&zip_xy_scaler 1 10>, <&zip_xy_to_scroll_mapper>;
-            process-next;
-        };
-
-        snipe {
-            layers = <L5>;
-            input-processors = <&zip_xy_scaler 1 25>, <&zip_xy_to_scroll_mapper>;
+            input-processors = <&zip_y_scaler 3 2>;
+//                               <&zip_mixer (INPUT_MIXER_X_ONLY)>;
             process-next;
         };
     };
 };
+
+ &zip_mixer {
+   sync-report-ms = <1>;
+   sync-report-yaw-ms = <8>;
+   yaw-div = <62>;
+ };
 
 &left_encoder {
     status = "okay";
@@ -241,19 +242,22 @@
     pinctrl-names = "default", "sleep";
     cs-gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;
 
-    trackball_primary: trackball@0 {
+    trackball_primary: trackball_primary@0 {
         status = "okay";
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        cpi = <400>;
+        cpi = <600>;
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
 
         force-awake;
         force-awake-4ms-mode;
+        xy-swap;
+        x-invert;
+        y-invert;
     };
 };
 
@@ -265,18 +269,22 @@
     pinctrl-names = "default", "sleep";
     cs-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
 
-    trackball_secondary: trackball@0 {
+    trackball_secondary: trackball_secondary@0 {
         status = "okay";
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio1 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        cpi = <1600>;
+        cpi = <600>;
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
 
         force-awake;
+        force-awake-4ms-mode;
+        xy-swap;
+        x-invert;
+        y-invert;
     };
 };
 
