@@ -188,46 +188,9 @@
 
 &zip_2s_mixer {
     status = "okay";
-};
-
-&left_encoder {
-    status = "okay";
-};
-
-&right_encoder {
-    status = "okay";
-};
-
-&uart0 {
-    compatible = "nordic,nrf-uarte";
-    status = "okay";
-    current-speed = <115200>;
-    pinctrl-0 = <&uart0_default>;
-    pinctrl-1 = <&uart0_sleep>;
-    pinctrl-names = "default", "sleep";
-};
-
-&adc {
-    status = "okay";
-};
-
-&gpiote {
-    status = "okay";
-};
-
-&gpio0 {
-    status = "okay";
-};
-
-&gpio1 {
-    status = "okay";
-};
-
-&i2c0 {
-    compatible = "nordic,nrf-twi";
-    pinctrl-0 = <&i2c0_default>;
-    pinctrl-1 = <&i2c0_sleep>;
-    pinctrl-names = "default", "sleep";
+	sync-report-ms = <4>;
+	sensor1-pos = [00 80 00];
+	sensor2-pos = [ff 72 00];
 };
 
 &spi0 {
@@ -244,14 +207,13 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        cpi = <1600>;
+        cpi = <800>;
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
 
         force-awake;
         force-awake-4ms-mode;
-        xy-swap;
         x-invert;
         y-invert;
     };
@@ -271,16 +233,13 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio1 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        cpi = <1600>;
+        cpi = <800>;
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
 
         force-awake;
         force-awake-4ms-mode;
-        xy-swap;
-        x-invert;
-        y-invert;
     };
 };
 
@@ -306,6 +265,46 @@
                          LED_COLOR_ID_RED
                          LED_COLOR_ID_BLUE>;
     };
+};
+
+&left_encoder {
+	status = "okay";
+};
+
+&right_encoder {
+	status = "okay";
+};
+
+&uart0 {
+	compatible = "nordic,nrf-uarte";
+	status = "okay";
+	current-speed = <115200>;
+	pinctrl-0 = <&uart0_default>;
+	pinctrl-1 = <&uart0_sleep>;
+	pinctrl-names = "default", "sleep";
+};
+
+&adc {
+	status = "okay";
+};
+
+&gpiote {
+	status = "okay";
+};
+
+&gpio0 {
+	status = "okay";
+};
+
+&gpio1 {
+	status = "okay";
+};
+
+&i2c0 {
+	compatible = "nordic,nrf-twi";
+	pinctrl-0 = <&i2c0_default>;
+	pinctrl-1 = <&i2c0_sleep>;
+	pinctrl-names = "default", "sleep";
 };
 
 &pwm0 {
