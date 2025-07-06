@@ -188,11 +188,12 @@
 
 &zip_2s_mixer {
     status = "okay";
-	sync-report-ms = <1>;
-	sync-report-yaw-ms = <8>;
-	yaw-div = <16>;
+	sync-report-ms = <1>; // 1: 300-400 Hz, 2-4: 250 Hz
+	sync-report-yaw-ms = <4>;
+	yaw-div = <4>;
 	yaw-mul = <1>;
-	yaw-interference-thres = <8>;
+	yaw-interference-thres = <6>; // CPI dependent
+	yaw-thres = <2>; // CPI dependent
 	ball-radius = <102>;
 	sensor1-pos = [31 4B 2D];
 	sensor2-pos = [C1 3C 2D];
@@ -205,12 +206,13 @@
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
     cs-gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;
+	clock-frequency = <2000000>;
 
     trackball_primary: trackball_primary@0 {
         status = "okay";
         compatible = "pixart,pmw3610";
 		init-retry-interval = <100>;
-		init-retry-count = <7>;
+		init-retry-count = <10>;
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
@@ -234,12 +236,13 @@
     pinctrl-1 = <&spi1_sleep>;
     pinctrl-names = "default", "sleep";
     cs-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
+	clock-frequency = <2000000>;
 
     trackball_secondary: trackball_secondary@0 {
         status = "okay";
         compatible = "pixart,pmw3610";
 		init-retry-interval = <100>;
-		init-retry-count = <7>;
+		init-retry-count = <10>;
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio1 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
@@ -257,24 +260,18 @@
 &spi3 {
     compatible = "nordic,nrf-spim";
     status = "okay";
-
     pinctrl-0 = <&spi3_default>;
     pinctrl-1 = <&spi3_sleep>;
     pinctrl-names = "default", "sleep";
 
     led_strip: ws2812@0 {
         compatible = "worldsemi,ws2812-spi";
-
         reg = <0>;
         spi-max-frequency = <4000000>;
-
-        /* WS2812 */
-        chain-length = <16>; /* number of LEDs */
+		chain-length = <16>;
         spi-one-frame = <0x70>;
         spi-zero-frame = <0x40>;
-        color-mapping = <LED_COLOR_ID_GREEN
-                         LED_COLOR_ID_RED
-                         LED_COLOR_ID_BLUE>;
+        color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
     };
 };
 
@@ -327,6 +324,16 @@
 
 zephyr_udc0: &usbd {
     status = "okay";
+};
+
+&radio {
+	status = "okay";
+	dfe-antenna-num = <12>;
+	dfe-pdu-antenna = <0x0>;
+	dfegpio0-gpios = <&gpio0 13 0>;
+	dfegpio1-gpios = <&gpio0 22 0>;
+	dfegpio2-gpios = <&gpio0 14 0>;
+	dfegpio3-gpios = <&gpio1 2 0>;
 };
 
 &flash0 {
