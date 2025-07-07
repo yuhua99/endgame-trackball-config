@@ -14,8 +14,9 @@
 #include <dt-bindings/led/led.h>
 #include "btns.dtsi"
 #include "trbl-pinctrl.dtsi"
-#include <dt-bindings/zmk/input_mixer.h>
-#include <input/processors/mixer.dtsi>
+#include <dt-bindings/zmk/p2sm.h>
+#include <input/processors/p2sm.dtsi>
+#include <behaviors/p2sm_behaviors.dtsi>
 
 #define DEFAULT 0
 #define L1 1
@@ -188,12 +189,11 @@
 
 &zip_2s_mixer {
     status = "okay";
-	sync-report-ms = <1>; // 1: 300-400 Hz, 2-4: 250 Hz
-	sync-report-yaw-ms = <4>;
-	yaw-div = <4>;
-	yaw-mul = <1>;
-	yaw-interference-thres = <6>; // CPI dependent
-	yaw-thres = <2>; // CPI dependent
+	sync-report-ms = <1>; // 1: 300-400 Hz, 2-4: 250 Hz, 8: 125 Hz
+	sync-report-yaw-ms = <8>;
+	yaw-interference-thres = <16>; // CPI dependent
+	yaw-thres = <20>; // CPI dependent
+
 	ball-radius = <102>;
 	sensor1-pos = [31 4B 2D];
 	sensor2-pos = [C1 3C 2D];
@@ -216,7 +216,7 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        cpi = <600>;
+        cpi = <3200>;
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
@@ -246,7 +246,7 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio1 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        cpi = <600>;
+        cpi = <3200>;
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
