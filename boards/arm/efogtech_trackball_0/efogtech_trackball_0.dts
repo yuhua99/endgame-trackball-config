@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2020 The ZMK Contributors
- *
- * SPDX-License-Identifier: MIT
- */
-
 /dts-v1/;
 #include <nordic/nrf52833_qiaa.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
@@ -12,18 +6,11 @@
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 #include <input/processors.dtsi>
 #include <dt-bindings/led/led.h>
-#include "btns.dtsi"
-#include "trbl-pinctrl.dtsi"
-#include <dt-bindings/zmk/p2sm.h>
-#include <input/processors/p2sm.dtsi>
-#include <behaviors/p2sm_behaviors.dtsi>
-
-#define DEFAULT 0
-#define L1 1
-#define L2 2
-#define L3 3
-#define L4 4
-#define L5 5
+#include "buttons.dtsi"
+#include "pinctrl.dtsi"
+#include "pointer.dtsi"
+#include "encoders.dtsi"
+#include "visuals.dtsi"
 
 / {
     model = "Trackball";
@@ -37,81 +24,37 @@
         zmk,studio-rpc-uart = &uart0;
         zmk,kscan = &kscan0;
         zmk,physical-layout = &physical_layout0;
-        zmk,underglow = &led_strip;
-        zmk,backlight = &backlight;
-    };
-
-    leds {
-        compatible = "gpio-leds";
-
-        led_0 {
-            gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>;
-        };
-
-        led_1 {
-            gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;
-        };
-
-        led_2 {
-            gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
-        };
-    };
-
-    vbatt: vbatt {
-        compatible = "zmk,battery-voltage-divider";
-        io-channels = <&adc 7>;
-        output-ohms = <160000>;
-        full-ohms = <(160000 + 160000)>;
-    };
-
-    left_encoder: encoder_left {
-        compatible = "alps,ec11";
-        a-gpios = <&gpio0 17 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        b-gpios = <&gpio0 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        steps = <80>;
-    };
-
-    right_encoder: encoder_right {
-        compatible = "alps,ec11";
-        a-gpios = <&gpio1 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        b-gpios = <&gpio1 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        steps = <80>;
-    };
-
-    sensors {
-        compatible = "zmk,keymap-sensors";
-        sensors = <&left_encoder &right_encoder>;
-        triggers-per-rotation = <20>;
     };
 
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-direct";
         wakeup-source;
         input-gpios
-        = <&btns 9 (GPIO_ACTIVE_LOW)>
-        , <&btns 8 (GPIO_ACTIVE_LOW)>
-        , <&btns 7 (GPIO_ACTIVE_LOW)>
-        , <&btns 6 (GPIO_ACTIVE_LOW)>
-        , <&btns 5 (GPIO_ACTIVE_LOW)>
-        , <&btns 4 (GPIO_ACTIVE_LOW)>
-        , <&btns 3 (GPIO_ACTIVE_LOW)>
-        , <&btns 2 (GPIO_ACTIVE_LOW)>
+        = <&btns 8 (GPIO_ACTIVE_LOW)>
+        , <&btns 9 (GPIO_ACTIVE_LOW)>
         , <&btns 1 (GPIO_ACTIVE_LOW)>
         , <&btns 0 (GPIO_ACTIVE_LOW)>
+        , <&btns 2 (GPIO_ACTIVE_LOW)>
+        , <&btns 7 (GPIO_ACTIVE_LOW)>
+        , <&btns 3 (GPIO_ACTIVE_LOW)>
+        , <&btns 6 (GPIO_ACTIVE_LOW)>
+        , <&btns 4 (GPIO_ACTIVE_LOW)>
+        , <&btns 5 (GPIO_ACTIVE_LOW)>
         ;
     };
 
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
-        rows = <4>;
-        columns = <2>;
-        map = <
-                  RC(0, 0) RC(0, 1)
-                  RC(0, 2) RC(0, 3)
-                  RC(0, 4) RC(0, 5)
-                  RC(0, 6) RC(0, 7)
-                  RC(0, 8) RC(0, 9)
-              >;
+        rows = <10>;
+        columns = <1>;
+        map =
+			<
+				RC(0, 0) RC(1, 0)
+				RC(2, 0) RC(3, 0)
+				RC(4, 0) RC(5, 0)
+				RC(6, 0) RC(7, 0)
+				RC(8, 0) RC(9, 0)
+			>;
     };
 
     physical_layout0: physical_layout_0 {
@@ -122,16 +65,17 @@
         kscan = <&kscan0>;
 
         keys  //               w    h   x   y   rot rx ry
-        = <&key_physical_attrs 270  90  90  0   0   0  0>
-        , <&key_physical_attrs 270  90  360 0   0   0  0>
-        , <&key_physical_attrs 90   270 0   45  0   0  0>
-        , <&key_physical_attrs 90   270 630 45  0   0  0>
-        , <&key_physical_attrs 90   270 0   315 0   0  0>
-        , <&key_physical_attrs 90   270 630 315 0   0  0>
-        , <&key_physical_attrs 270  90  360 540 0   0  0>
-        , <&key_physical_attrs 270  90  90  540 0   0  0>
-        , <&key_physical_attrs 270  45  90  490 0   0  0>
-        , <&key_physical_attrs 270  45  360 490 0   0  0>
+        = <&key_physical_attrs 120  120  95   80   0    120  120>
+        , <&key_physical_attrs 120  120  611  80   0    120  120>
+
+        , <&key_physical_attrs 160  80   177  275  0    0    0  >
+		, <&key_physical_attrs 160  80   489  275  0    0    0  >
+		, <&key_physical_attrs 80   160  80   347  0    0    0  >
+		, <&key_physical_attrs 80   160  666  347  0    0    0  >
+		, <&key_physical_attrs 80   160  80   676  0    0    0  >
+		, <&key_physical_attrs 80   160  666  676  0    0    0  >
+		, <&key_physical_attrs 160  80   177  870  0    0    0  >
+		, <&key_physical_attrs 160  80   489  870  0    0    0  >
         ;
     };
 
@@ -142,145 +86,26 @@
         layout1: layout1 {
             physical-layout = <&physical_layout0>;
             positions
-            = <0 1>
-            , <2 3>
-            , <4 5>
-            , <6 7>
-            , <8 9>
+            = <0>,
+			  <1>,
+			  <2>,
+			  <3>,
+			  <4>,
+			  <5>,
+			  <6>,
+			  <7>,
+			  <8>,
+			  <9>
             ;
         };
     };
 
-    backlight: pwmleds {
-        compatible = "pwm-leds";
-
-        pwm_led_0 {
-            pwms = <&pwm0 0 PWM_MSEC(10) PWM_POLARITY_NORMAL>;
-        };
-    };
-
-    output_node {
-        compatible = "zmk,input-listener";
-        device = <&zip_2s_mixer>;
-    };
-
-    trackball_primary_listener: trackball_primary_listener {
-        compatible = "zmk,input-listener";
-        device = <&trackball_primary>;
-
-        listener {
-            layers = <DEFAULT>;
-            input-processors = <&zip_2s_mixer INPUT_MIXER_SENSOR1>;
-            process-next;
-        };
-    };
-
-    trackball_secondary_listener: trackball_secondary_listener {
-        compatible = "zmk,input-listener";
-        device = <&trackball_secondary>;
-
-        listener {
-            layers = <DEFAULT>;
-            input-processors = <&zip_2s_mixer INPUT_MIXER_SENSOR2>;
-            process-next;
-        };
-    };
-};
-
-&zip_2s_mixer {
-    status = "okay";
-	sync-report-ms = <1>; // 1: 300-400 Hz, 2-4: 250 Hz, 8: 125 Hz
-	sync-report-yaw-ms = <8>;
-	yaw-interference-thres = <16>; // CPI dependent
-	yaw-thres = <20>; // CPI dependent
-
-	ball-radius = <102>;
-	sensor1-pos = [31 4B 2D];
-	sensor2-pos = [C1 3C 2D];
-};
-
-&spi0 {
-    status = "okay";
-    compatible = "nordic,nrf-spim";
-    pinctrl-0 = <&spi0_default>;
-    pinctrl-1 = <&spi0_sleep>;
-    pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;
-	clock-frequency = <2000000>;
-
-    trackball_primary: trackball_primary@0 {
-        status = "okay";
-        compatible = "pixart,pmw3610";
-		init-retry-interval = <100>;
-		init-retry-count = <10>;
-        reg = <0>;
-        spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        cpi = <3200>;
-        evt-type = <INPUT_EV_REL>;
-        x-input-code = <INPUT_REL_X>;
-        y-input-code = <INPUT_REL_Y>;
-
-        force-awake;
-        force-high-performance;
-		xy-swap;
-		x-invert;
-		y-invert;
-    };
-};
-
-&spi1 {
-    status = "okay";
-    compatible = "nordic,nrf-spim";
-    pinctrl-0 = <&spi1_default>;
-    pinctrl-1 = <&spi1_sleep>;
-    pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
-	clock-frequency = <2000000>;
-
-    trackball_secondary: trackball_secondary@0 {
-        status = "okay";
-        compatible = "pixart,pmw3610";
-		init-retry-interval = <100>;
-		init-retry-count = <10>;
-        reg = <0>;
-        spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio1 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        cpi = <3200>;
-        evt-type = <INPUT_EV_REL>;
-        x-input-code = <INPUT_REL_X>;
-        y-input-code = <INPUT_REL_Y>;
-
-        force-awake;
-        force-high-performance;
-		xy-swap;
-    };
-};
-
-&spi3 {
-    compatible = "nordic,nrf-spim";
-    status = "okay";
-    pinctrl-0 = <&spi3_default>;
-    pinctrl-1 = <&spi3_sleep>;
-    pinctrl-names = "default", "sleep";
-
-    led_strip: ws2812@0 {
-        compatible = "worldsemi,ws2812-spi";
-        reg = <0>;
-        spi-max-frequency = <4000000>;
-		chain-length = <16>;
-        spi-one-frame = <0x70>;
-        spi-zero-frame = <0x40>;
-        color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
-    };
-};
-
-&left_encoder {
-	status = "okay";
-};
-
-&right_encoder {
-	status = "okay";
+	vbatt: vbatt {
+		compatible = "zmk,battery-voltage-divider";
+		io-channels = <&adc 7>;
+		output-ohms = <160000>;
+		full-ohms = <(160000 + 160000)>;
+	};
 };
 
 &uart0 {
@@ -289,6 +114,13 @@
 	current-speed = <115200>;
 	pinctrl-0 = <&uart0_default>;
 	pinctrl-1 = <&uart0_sleep>;
+	pinctrl-names = "default", "sleep";
+};
+
+&i2c0 {
+	compatible = "nordic,nrf-twi";
+	pinctrl-0 = <&i2c0_default>;
+	pinctrl-1 = <&i2c0_sleep>;
 	pinctrl-names = "default", "sleep";
 };
 
@@ -308,32 +140,12 @@
 	status = "okay";
 };
 
-&i2c0 {
-	compatible = "nordic,nrf-twi";
-	pinctrl-0 = <&i2c0_default>;
-	pinctrl-1 = <&i2c0_sleep>;
-	pinctrl-names = "default", "sleep";
-};
-
-&pwm0 {
-    status = "okay";
-    pinctrl-0 = <&pwm0_default>;
-    pinctrl-1 = <&pwm0_sleep>;
-    pinctrl-names = "default", "sleep";
-};
-
 zephyr_udc0: &usbd {
     status = "okay";
 };
 
 &radio {
 	status = "okay";
-	dfe-antenna-num = <12>;
-	dfe-pdu-antenna = <0x0>;
-	dfegpio0-gpios = <&gpio0 13 0>;
-	dfegpio1-gpios = <&gpio0 22 0>;
-	dfegpio2-gpios = <&gpio0 14 0>;
-	dfegpio3-gpios = <&gpio1 2 0>;
 };
 
 &flash0 {

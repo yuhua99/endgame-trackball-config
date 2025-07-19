@@ -6,66 +6,78 @@
 #include <dt-bindings/zmk/p2sm.h>
 #include <behaviors/p2sm_behaviors.dtsi>
 
-#define DEFAULT 0
-#define L1 1
-#define L2 2
-#define L3 3
-#define L4 4
-#define L5 5
-
 / {
-  behaviors {
-    ltm: layer-tap-momentary {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      flavor = "tap-preferred";
-      tapping-term-ms = <200>;
-      bindings = <&mo>, <&mkp>;
-    };
-    lth: layer-tap-hold-while-undecided {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      flavor = "hold-preferred";
-      hold-while-undecided;
-      tapping-term-ms = <150>;
-      bindings = <&mo>, <&mkp>;
-    };
-    mto: momentary-or-toggle {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      flavor = "hold-preferred";
-      hold-while-undecided;
-      tapping-term-ms = <200>;
-      bindings = <&mo>, <&to>;
-    };
+	behaviors {
+		ltm: layer-tap-momentary {
+			compatible = "zmk,behavior-hold-tap";
+			#binding-cells = <2>;
+			flavor = "tap-preferred";
+			tapping-term-ms = <150>;
+			bindings = <&mo>, <&mkp>;
+		};
 
-    sens: p2sm_sensitivity {
-	  step = <125>;
-    };
+		lth: layer-tap-hold-while-undecided {
+			compatible = "zmk,behavior-hold-tap";
+			#binding-cells = <2>;
+			flavor = "hold-preferred";
+			hold-while-undecided;
+			tapping-term-ms = <150>;
+			bindings = <&mo>, <&mkp>;
+		};
 
-    scrlsens: p2sm_scroll_sensitivity {
-	  step = <25>;
-	  max-step = <12>;
-    };
-  };
+		mto: momentary-or-toggle {
+			compatible = "zmk,behavior-hold-tap";
+			#binding-cells = <2>;
+			flavor = "hold-preferred";
+			hold-while-undecided;
+			tapping-term-ms = <150>;
+			bindings = <&mo>, <&to>;
+		};
 
-  keymap {
-    compatible = "zmk,keymap";
+		sens: p2sm_sensitivity {
+			step = <100>;
+			max-step = <5>;
+			feedback-duration = <200>;
+		};
 
-    default_layer {
-      display-name = "Default";
-      sensor-bindings = <
-		&inc_dec_kp C_VOL_UP C_VOL_DN
-		&inc_dec_kp PG_UP PG_DN
-	  >;
+		scrlsens: p2sm_scroll_sensitivity {
+			step = <10>;
+			min-step = <2>;
+			max-step = <12>; // not sure if anyone will ever need more
+			feedback-duration = <200>;
+		};
 
-      bindings = <
-        &scrlsens P2SM_DEC 1    &scrlsens P2SM_INC 1
-		&scrlsens P2SM_DEC 2    &scrlsens P2SM_INC 2
-		&scrlsens P2SM_DEC 1    &scrlsens P2SM_INC 1
-		&scrlsens P2SM_DEC 2    &scrlsens P2SM_INC 2
-		&scrlsens P2SM_DEC 1    &scrlsens P2SM_INC 1
-      >;
-    };
-  };
+		scrlsenstog: p2sm_sens_toggle {
+			status = "okay";
+			feedback-duration = <500>;
+
+			display-name = "Scroll sensitivity (toggle 4%/8%)";
+			step = <40>;
+			min-step = <1>;
+			max-step = <2>;
+			scroll;
+		};
+	};
+
+	keymap {
+		compatible = "zmk,keymap";
+
+		default_layer {
+			display-name = "Default";
+			sensor-bindings =
+				<
+					&inc_dec_kp C_VOL_UP C_VOL_DN
+					&inc_dec_kp PG_UP PG_DN
+				>;
+
+			bindings =
+				<
+					&scrlsenstog P2SM_INC 1        &mkp LCLK
+					&sens P2SM_INC 1               &sens P2SM_DEC 1
+					&scrlsens P2SM_DEC 1           &scrlsens P2SM_INC 1
+					&mkp MCLK                      &mkp RCLK
+					&scrlsenstog P2SM_INC 1        &mkp LCLK
+				>;
+		};
+	};
 };
