@@ -1,15 +1,14 @@
 #include <dt-bindings/zmk/p2sm.h>
 #include <input/processors/p2sm.dtsi>
 #include <behaviors/p2sm_behaviors.dtsi>
-#define DEFAULT 0
 
 &zip_2s_mixer {
 	status = "okay";
 	sync-report-ms = <1>;
 	sync-scroll-report-ms = <4>;
 
-	twist-interference-thres = <18>; // CPI and sync-scroll-report-ms dependent
-	twist-thres = <21>; // CPI and sync-scroll-report-ms dependent
+	twist-interference-thres = <16>; // CPI and sync-scroll-report-ms dependent
+	twist-thres = <24>; // CPI and sync-scroll-report-ms dependent
 
 	// arbitrary bounding box (0, 0, 0) - (255, 255, 255)
 	ball-radius = <102>; // maximum = 127
@@ -32,7 +31,7 @@
 		};
 	};
 
-	output_node {
+	trackball {
 		compatible = "zmk,input-listener";
 		device = <&zip_2s_mixer>;
 	};
@@ -40,23 +39,13 @@
 	trackball_primary_listener: trackball_primary_listener {
 		compatible = "zmk,input-listener";
 		device = <&trackball_primary>;
-
-		listener {
-			layers = <DEFAULT>;
-			input-processors = <&zip_2s_mixer INPUT_MIXER_SENSOR1>;
-			process-next;
-		};
+		input-processors = <&zip_2s_mixer INPUT_MIXER_SENSOR1>;
 	};
 
 	trackball_secondary_listener: trackball_secondary_listener {
 		compatible = "zmk,input-listener";
 		device = <&trackball_secondary>;
-
-		listener {
-			layers = <DEFAULT>;
-			input-processors = <&zip_2s_mixer INPUT_MIXER_SENSOR2>;
-			process-next;
-		};
+		input-processors = <&zip_2s_mixer INPUT_MIXER_SENSOR2>;
 	};
 };
 

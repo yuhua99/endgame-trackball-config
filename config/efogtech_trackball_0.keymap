@@ -6,7 +6,34 @@
 #include <dt-bindings/zmk/p2sm.h>
 #include <behaviors/p2sm_behaviors.dtsi>
 
+#define LAYER_DEFAULT 0
+#define LAYER_EXTRAS 1
+#define LAYER_DEVICE 2
+#define LAYER_SCROLL 3
+#define LAYER_SNIPE 4
+
+#define SNIPE_MULTIPLIER 1
+#define SNIPE_DIVISOR 5
+
+#define SCROLL_MULTIPLIER 1
+#define SCROLL_DIVISOR 2
+
 / {
+	trackball {
+		scroll {
+			layers = <LAYER_SCROLL>;
+			input-processors = <&zip_xy_scaler SCROLL_MULTIPLIER SCROLL_DIVISOR>,
+							   <&zip_xy_to_scroll_mapper>,
+							   <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>;
+		};
+
+		snipe {
+			layers = <LAYER_SNIPE>;
+			input-processors = <&zip_xy_scaler SNIPE_MULTIPLIER SNIPE_DIVISOR>,
+							   <&zip_scroll_scaler SNIPE_MULTIPLIER SNIPE_DIVISOR>;
+		};
+	};
+
 	behaviors {
 		ltm: layer-tap-momentary {
 			compatible = "zmk,behavior-hold-tap";
@@ -14,6 +41,14 @@
 			flavor = "tap-preferred";
 			tapping-term-ms = <150>;
 			bindings = <&mo>, <&mkp>;
+		};
+
+		ltmkp: layer-tap-momentary-key-press {
+			compatible = "zmk,behavior-hold-tap";
+			#binding-cells = <2>;
+			flavor = "tap-preferred";
+			tapping-term-ms = <150>;
+			bindings = <&mo>, <&kp>;
 		};
 
 		lth: layer-tap-hold-while-undecided {
@@ -25,37 +60,39 @@
 			bindings = <&mo>, <&mkp>;
 		};
 
-		mto: momentary-or-toggle {
-			compatible = "zmk,behavior-hold-tap";
-			#binding-cells = <2>;
-			flavor = "hold-preferred";
-			hold-while-undecided;
-			tapping-term-ms = <150>;
-			bindings = <&mo>, <&to>;
-		};
-
 		sens: p2sm_sensitivity {
+			feedback-duration = <100>;
 			step = <100>;
 			max-step = <5>;
-			feedback-duration = <200>;
 		};
 
 		scrlsens: p2sm_scroll_sensitivity {
+			feedback-duration = <100>;
 			step = <10>;
 			min-step = <2>;
-			max-step = <12>; // not sure if anyone will ever need more
-			feedback-duration = <200>;
+			max-step = <12>;
 		};
 
 		scrlsenstog: p2sm_sens_toggle {
 			status = "okay";
-			feedback-duration = <500>;
-
+			feedback-duration = <250>;
 			display-name = "Scroll sensitivity (toggle 4%/8%)";
 			step = <40>;
 			min-step = <1>;
 			max-step = <2>;
 			scroll;
+		};
+
+		rotenc_sens: rotenc_sens {
+			compatible = "zmk,behavior-sensor-rotate-var";
+			#sensor-binding-cells = <2>;
+			bindings = <&sens>, <&sens>;
+		};
+
+		rotenc_scrlsens: rotenc_scrlsens {
+			compatible = "zmk,behavior-sensor-rotate-var";
+			#sensor-binding-cells = <2>;
+			bindings = <&scrlsens>, <&scrlsens>;
 		};
 	};
 
@@ -67,16 +104,83 @@
 			sensor-bindings =
 				<
 					&inc_dec_kp C_VOL_UP C_VOL_DN
-					&inc_dec_kp PG_UP PG_DN
+					&rotenc_scrlsens P2SM_INC P2SM_DEC
 				>;
 
 			bindings =
 				<
-					&scrlsenstog P2SM_INC 1        &mkp LCLK
-					&sens P2SM_INC 1               &sens P2SM_DEC 1
-					&scrlsens P2SM_DEC 1           &scrlsens P2SM_INC 1
-					&mkp MCLK                      &mkp RCLK
-					&scrlsenstog P2SM_INC 1        &mkp LCLK
+					&kp LGUI                  &lth LAYER_SCROLL MCLK
+					&mkp LCLK                 &ltmkp LAYER_SNIPE ENTER
+					&mkp MCLK                 &mkp RCLK
+					&lth LAYER_EXTRAS MB4     &lth LAYER_DEVICE MB5
+				>;
+		};
+
+		layer2 {
+			display-name = "Extras";
+			sensor-bindings =
+				<
+					&rotenc_sens P2SM_INC P2SM_DEC
+					&rotenc_scrlsens P2SM_INC P2SM_DEC
+				>;
+
+			bindings =
+				<
+					&trans &trans
+					&trans &trans
+					&trans &trans
+					&trans &trans
+				>;
+		};
+
+		layer3 {
+			display-name = "Device";
+			sensor-bindings =
+				<
+					&inc_dec_kp C_VOL_UP C_VOL_DN
+					&rotenc_scrlsens P2SM_INC P2SM_DEC
+				>;
+
+			bindings =
+				<
+					&trans &trans
+					&trans &trans
+					&trans &trans
+					&trans &trans
+				>;
+		};
+
+		layer4 {
+			display-name = "Scroll";
+			sensor-bindings =
+				<
+					&inc_dec_kp C_VOL_UP C_VOL_DN
+					&rotenc_scrlsens P2SM_INC P2SM_DEC
+				>;
+
+			bindings =
+				<
+					&trans                  &trans
+					&trans                  &scrlsenstog P2SM_INC 1
+					&trans                  &trans
+					&scrlsens P2SM_DEC 1    &scrlsens P2SM_INC 1
+				>;
+		};
+
+		layer5 {
+			display-name = "Snipe";
+			sensor-bindings =
+				<
+					&inc_dec_kp C_VOL_UP C_VOL_DN
+					&rotenc_scrlsens P2SM_INC P2SM_DEC
+				>;
+
+			bindings =
+				<
+					&trans &trans
+					&trans &trans
+					&trans &trans
+					&trans &trans
 				>;
 		};
 	};
