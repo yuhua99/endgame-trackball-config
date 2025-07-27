@@ -12,25 +12,30 @@
 #define LAYER_SCROLL 3
 #define LAYER_SNIPE 4
 
+// for drag scroll
+#define SCROLL_MULTIPLIER 1
+#define SCROLL_DIVISOR 2
+
+// for pointer on snipe layer
 #define SNIPE_MULTIPLIER 1
 #define SNIPE_DIVISOR 5
 
-#define SCROLL_MULTIPLIER 1
-#define SCROLL_DIVISOR 2
+// for twist scroll on snipe layer
+#define SNIPE_SCROLL_MULTIPLIER 1
+#define SNIPE_SCROLL_DIVISOR 2
 
 / {
 	trackball {
 		scroll {
 			layers = <LAYER_SCROLL>;
 			input-processors = <&zip_xy_scaler SCROLL_MULTIPLIER SCROLL_DIVISOR>,
-							   <&zip_xy_to_scroll_mapper>,
-							   <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>;
+							   <&zip_xy_to_scroll_mapper>, <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>;
 		};
 
 		snipe {
 			layers = <LAYER_SNIPE>;
 			input-processors = <&zip_xy_scaler SNIPE_MULTIPLIER SNIPE_DIVISOR>,
-							   <&zip_scroll_scaler SNIPE_MULTIPLIER SNIPE_DIVISOR>;
+							   <&zip_scroll_scaler SNIPE_SCROLL_MULTIPLIER SNIPE_SCROLL_DIVISOR>;
 		};
 	};
 
@@ -62,8 +67,8 @@
 
 		sens: p2sm_sensitivity {
 			feedback-duration = <100>;
-			step = <100>;
-			max-step = <5>;
+			step = <50>;
+			max-step = <8>;
 		};
 
 		scrlsens: p2sm_scroll_sensitivity {
@@ -143,10 +148,10 @@
 
 			bindings =
 				<
-					&trans &trans
-					&trans &trans
-					&trans &trans
-					&trans &trans
+					&sens P2SM_DEC 1   &sens P2SM_INC 1
+					&trans             &trans
+					&trans             &trans
+					&trans             &trans
 				>;
 		};
 
@@ -161,8 +166,8 @@
 			bindings =
 				<
 					&trans                  &trans
-					&trans                  &scrlsenstog P2SM_INC 1
 					&trans                  &trans
+					&trans                  &scrlsenstog P2SM_INC 1
 					&scrlsens P2SM_DEC 1    &scrlsens P2SM_INC 1
 				>;
 		};
