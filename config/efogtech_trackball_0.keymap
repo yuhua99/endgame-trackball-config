@@ -6,6 +6,7 @@
 #include <dt-bindings/zmk/p2sm.h>
 #include <dt-bindings/zmk/backlight.h>
 #include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/zmk/ext_power.h>
 #include <behaviors/p2sm_behaviors.dtsi>
 
 #define LAYER_DEFAULT 0
@@ -38,7 +39,7 @@
 
 		layer2 {
 			display-name = "Extras";
-			sensor-bindings = <&rotenc_ug RGB_EFF_CMD RGB_TOG_CMD &rotenc_bl BL_INC_CMD BL_DEC_CMD>;
+			sensor-bindings = <&rotenc_ug RGB_EFF_CMD EP_TOG &rotenc_bl BL_INC_CMD BL_DEC_CMD>;
 			bindings = <
 				&kp LC(C)   &kp LC(V)
 				&kp LC(X)   &kp LG(Q)
@@ -96,7 +97,7 @@
 	trackball {
 		scroll {
 			layers = <LAYER_SCROLL>;
-			input-processors = <&zip_xy_scaler SCROLL_MULTIPLIER SCROLL_DIVISOR>,
+			input-processors = <&zip_xy_scaler SCROLL_MULTIPLIER SCROLL_DIVISOR>, <&zip_axis_clamper>,
 							   <&zip_xy_to_scroll_mapper>, <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>;
 		};
 
@@ -141,8 +142,8 @@
 		};
 
 		scrlsenstog: p2sm_sens_toggle {
-			feedback-duration = <150>;
 			display-name = "Scroll sensitivity (toggle 3%/6%)";
+			feedback-duration = <150>;
 			step = <30>;
 			min-step = <1>;
 			max-step = <2>;
@@ -189,7 +190,7 @@
 		rotenc_ug: rotenc_ug {
 			compatible = "zmk,behavior-sensor-rotate-var";
 			#sensor-binding-cells = <2>;
-			bindings = <&rgb_ug>, <&rgb_ug>;
+			bindings = <&rgb_ug>, <&ext_power>;
 		};
 	};
 };

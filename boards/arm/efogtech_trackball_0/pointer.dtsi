@@ -1,5 +1,6 @@
 #include <dt-bindings/zmk/p2sm.h>
 #include <input/processors/p2sm.dtsi>
+#include <input/processors/axis_clamper.dtsi>
 #include <behaviors/p2sm_behaviors.dtsi>
 
 &zip_2s_mixer {
@@ -19,15 +20,15 @@
 / {
 	behaviors {
 		p2sm_sensitivity {
-			feedback-gpios = <&gpio0 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+			feedback-gpios = <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
 		};
 
 		p2sm_scroll_sensitivity {
-			feedback-gpios = <&gpio0 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+			feedback-gpios = <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
 		};
 
 		p2sm_sens_toggle {
-			feedback-gpios = <&gpio0 20 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+			feedback-gpios = <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
 		};
 	};
 
