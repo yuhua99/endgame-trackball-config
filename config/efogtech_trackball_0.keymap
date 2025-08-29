@@ -63,10 +63,10 @@
 			display-name = "Scroll";
 			sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp LC(LA(RIGHT)) LC(LA(LEFT))>;
 			bindings = <
-			    &trans        &trans
-			    &trans        &trans
-			    &trans        &trans
-			    &trans        &trans
+			    &trans              &trans
+			    &trans              &trans
+			    &trans              &trans
+			    &sens P2SM_DEC 1    &sens P2SM_INC 1
 			>;
 		};
 
