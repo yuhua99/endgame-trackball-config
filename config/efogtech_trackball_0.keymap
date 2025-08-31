@@ -39,7 +39,7 @@
 
 		layer2 {
 			display-name = "Extras";
-			sensor-bindings = <&rotenc_ug RGB_EFF_CMD EP_TOG &rotenc_bl BL_INC_CMD BL_DEC_CMD>;
+			sensor-bindings = <&rotenc_ug RGB_EFF_CMD RGB_TOG_CMD &rotenc_bl BL_INC_CMD BL_DEC_CMD>;
 			bindings = <
 				&kp LC(C)   &kp LC(V)
 				&kp LC(X)   &kp LG(Q)
@@ -64,8 +64,8 @@
 			sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp LC(LA(RIGHT)) LC(LA(LEFT))>;
 			bindings = <
 			    &trans              &trans
-			    &trans              &trans
-			    &trans              &trans
+			    &trans              &scrlsens P2SM_INC 1
+			    &trans              &scrlsens P2SM_DEC 1
 			    &sens P2SM_DEC 1    &sens P2SM_INC 1
 			>;
 		};
@@ -74,11 +74,10 @@
 			display-name = "Snipe";
 			sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp LC(LA(RIGHT)) LC(LA(LEFT))>;
 			bindings = <
-				&kp LA(F4)   &trans
-				&trans       &trans
-				&trans       &soft_off
-				&trans       &trans
-
+				&kp LA(F4)       &trans
+				&trans           &trans
+				&rgb_off         &soft_off
+				&rgb_ug RGB_EFF  &rgb_tog
 			>;
 		};
 
@@ -104,6 +103,30 @@
 		snipe {
 			layers = <LAYER_SNIPE>;
 			input-processors = <&zip_xy_scaler SNIPE_MULTIPLIER SNIPE_DIVISOR>;
+		};
+	};
+
+	macros {
+		rgb_tog: rgb_tog {
+			compatible = "zmk,behavior-macro";
+			#binding-cells = <0>;
+			wait-ms = <50>;
+			bindings
+			= <&rgb_ug RGB_TOG>
+			, <&ext_power EP_TOG>
+			;
+		};
+
+
+		rgb_off: rgb_off {
+			compatible = "zmk,behavior-macro";
+
+			#binding-cells = <0>;
+			wait-ms = <50>;
+			bindings
+			= <&ext_power EP_OFF>
+			, <&rgb_ug RGB_OFF>
+			;
 		};
 	};
 
@@ -190,7 +213,7 @@
 		rotenc_ug: rotenc_ug {
 			compatible = "zmk,behavior-sensor-rotate-var";
 			#sensor-binding-cells = <2>;
-			bindings = <&rgb_ug>, <&ext_power>;
+			bindings = <&rgb_ug>, <&rgb_ug>;
 		};
 	};
 };

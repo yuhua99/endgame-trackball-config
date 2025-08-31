@@ -18,5 +18,8 @@ manifest:
     - name: zmk-axis-clamper
       remote: efogdev
       revision: main
+    - name: zmk-input-processor-report-rate-limit
+      remote: efogdev
+      revision: main
   self:
     path: config

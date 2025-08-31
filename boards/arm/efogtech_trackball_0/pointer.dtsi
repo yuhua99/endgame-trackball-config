@@ -1,6 +1,7 @@
 #include <dt-bindings/zmk/p2sm.h>
 #include <input/processors/p2sm.dtsi>
 #include <input/processors/axis_clamper.dtsi>
+#include <input/processors/report_rate_limit.dtsi>
 #include <behaviors/p2sm_behaviors.dtsi>
 
 &zip_2s_mixer {
@@ -21,20 +22,24 @@
 	behaviors {
 		p2sm_sensitivity {
 			feedback-gpios = <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+			feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
 		};
 
 		p2sm_scroll_sensitivity {
 			feedback-gpios = <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+			feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
 		};
 
 		p2sm_sens_toggle {
 			feedback-gpios = <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+			feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
 		};
 	};
 
 	trackball {
 		compatible = "zmk,input-listener";
 		device = <&zip_2s_mixer>;
+		input-processors = <&zip_ble_report_rate_limit>;
 	};
 
 	trackball_primary_listener: trackball_primary_listener {
@@ -97,6 +102,7 @@
 		reg = <0>;
 		spi-max-frequency = <2000000>;
 		irq-gpios = <&gpio1 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+		rst-gpios = <&gpio1 6 GPIO_ACTIVE_LOW>;
 		cpi = <3200>;
 		evt-type = <INPUT_EV_REL>;
 		x-input-code = <INPUT_REL_X>;
@@ -105,5 +111,6 @@
 		force-awake;
 		force-high-performance;
 		xy-swap;
+		enable-pm-support;
 	};
 };

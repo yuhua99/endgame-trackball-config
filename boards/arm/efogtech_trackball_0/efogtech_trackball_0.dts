@@ -28,7 +28,6 @@
 
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-direct";
-        wakeup-source;
         input-gpios
         = <&btns 1 (GPIO_ACTIVE_LOW)>
         , <&btns 0 (GPIO_ACTIVE_LOW)>
@@ -40,6 +39,25 @@
         , <&btns 5 (GPIO_ACTIVE_LOW)>
         ;
     };
+
+	keys {
+		compatible = "gpio-keys";
+		wakeup_key: wakeup_key {
+			gpios = <&btns 10 GPIO_ACTIVE_LOW>;
+		};
+	};
+
+	wakeup_source: wakeup_source {
+		compatible = "zmk,gpio-key-wakeup-trigger";
+
+		trigger = <&wakeup_key>;
+		wakeup-source;
+	};
+
+	soft_off_wakers {
+		compatible = "zmk,soft-off-wakeup-sources";
+		wakeup-sources = <&wakeup_source>;
+	};
 
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
@@ -104,12 +122,12 @@
 	pinctrl-names = "default", "sleep";
 };
 
-&i2c0 {
-	compatible = "nordic,nrf-twi";
-	pinctrl-0 = <&i2c0_default>;
-	pinctrl-1 = <&i2c0_sleep>;
-	pinctrl-names = "default", "sleep";
-};
+//&i2c0 {
+//	compatible = "nordic,nrf-twi";
+//	pinctrl-0 = <&i2c0_default>;
+//	pinctrl-1 = <&i2c0_sleep>;
+//	pinctrl-names = "default", "sleep";
+//};
 
 &adc {
 	status = "okay";
