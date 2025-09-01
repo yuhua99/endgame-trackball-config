@@ -49,7 +49,6 @@
 
 	wakeup_source: wakeup_source {
 		compatible = "zmk,gpio-key-wakeup-trigger";
-
 		trigger = <&wakeup_key>;
 		wakeup-source;
 	};
@@ -108,8 +107,8 @@
 	vbatt: vbatt {
 		compatible = "zmk,battery-voltage-divider";
 		io-channels = <&adc 7>;
-		output-ohms = <340000>;
-		full-ohms = <(340000 + 340000)>;
+		output-ohms = <1>;
+		full-ohms = <2>;
 	};
 };
 

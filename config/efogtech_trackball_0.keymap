@@ -39,7 +39,7 @@
 
 		layer2 {
 			display-name = "Extras";
-			sensor-bindings = <&rotenc_ug RGB_EFF_CMD RGB_TOG_CMD &rotenc_bl BL_INC_CMD BL_DEC_CMD>;
+			sensor-bindings = <&rotenc_ug RGB_EFF_CMD RGB_TOG_CMD &rotenc_ug RGB_BRI_CMD RGB_BRD_CMD>;
 			bindings = <
 				&kp LC(C)   &kp LC(V)
 				&kp LC(X)   &kp LG(Q)
@@ -116,7 +116,6 @@
 			, <&ext_power EP_TOG>
 			;
 		};
-
 
 		rgb_off: rgb_off {
 			compatible = "zmk,behavior-macro";
@@ -202,12 +201,6 @@
 			compatible = "zmk,behavior-sensor-rotate-var";
 			#sensor-binding-cells = <2>;
 			bindings = <&scrlsens_nowrap>, <&scrlsens_nowrap>;
-		};
-
-		rotenc_bl: rotenc_bl {
-			compatible = "zmk,behavior-sensor-rotate-var";
-			#sensor-binding-cells = <2>;
-			bindings = <&bl>, <&bl>;
 		};
 
 		rotenc_ug: rotenc_ug {

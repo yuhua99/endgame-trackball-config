@@ -7,7 +7,7 @@
 
 	chosen {
 		zmk,underglow = &led_strip;
-		zmk,backlight = &backlight;
+//		zmk,backlight = &backlight;
 	};
 
 	leds {
@@ -22,27 +22,27 @@
 		};
 	};
 
-	backlight: pwmleds {
-		compatible = "pwm-leds";
-
-		pwm_led_0 {
-			pwms = <&pwm0 0 PWM_MSEC(10) PWM_POLARITY_NORMAL>;
-		};
-	};
+//	backlight: pwmleds {
+//		compatible = "pwm-leds";
+//
+//		pwm_led_0 {
+//			pwms = <&pwm0 0 PWM_MSEC(10) PWM_POLARITY_NORMAL>;
+//		};
+//	};
 
 	EXT_POWER: EXT_POWER {
 		compatible = "zmk,ext-power-generic";
-		control-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+		control-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>, <&gpio1 3 GPIO_ACTIVE_HIGH>;
 		init-delay-ms = <10>;
 	};
 };
 
-&pwm0 {
-	status = "okay";
-	pinctrl-0 = <&pwm0_default>;
-	pinctrl-1 = <&pwm0_sleep>;
-	pinctrl-names = "default", "sleep";
-};
+//&pwm0 {
+//	status = "okay";
+//	pinctrl-0 = <&pwm0_default>;
+//	pinctrl-1 = <&pwm0_sleep>;
+//	pinctrl-names = "default", "sleep";
+//};
 
 &spi2 {
 	compatible = "nordic,nrf-spim";
