@@ -39,7 +39,7 @@
 
 		layer2 {
 			display-name = "Extras";
-			sensor-bindings = <&rotenc_ug RGB_EFF_CMD RGB_TOG_CMD &rotenc_ug RGB_BRI_CMD RGB_BRD_CMD>;
+			sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp LC(LA(RIGHT)) LC(LA(LEFT))>;
 			bindings = <
 				&kp LC(C)   &kp LC(V)
 				&kp LC(X)   &kp LG(Q)
@@ -50,7 +50,7 @@
 
 		layer3 {
 			display-name = "Device";
-			sensor-bindings = <&rotenc_sens P2SM_DEC P2SM_INC &rotenc_scrlsens P2SM_INC P2SM_DEC>;
+			sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp LC(LA(RIGHT)) LC(LA(LEFT))>;
 			bindings = <
 				&rgb_ug RGB_BRD    &rgb_ug RGB_BRI
 				&bt BT_CLR         &bt BT_NXT
@@ -61,7 +61,7 @@
 
 		layer4 {
 			display-name = "Scroll";
-			sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp LC(LA(RIGHT)) LC(LA(LEFT))>;
+			sensor-bindings = <&rotenc_sens P2SM_DEC P2SM_INC &rotenc_scrlsens P2SM_INC P2SM_DEC>;
 			bindings = <
 			    &trans              &trans
 			    &trans              &scrlsens P2SM_INC 1
@@ -72,7 +72,7 @@
 
 		layer5 {
 			display-name = "Snipe";
-			sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp LC(LA(RIGHT)) LC(LA(LEFT))>;
+			sensor-bindings = <&inc_dec_kp RIGHT LEFT &inc_dec_kp RIGHT LEFT>;
 			bindings = <
 				&kp LA(F4)       &trans
 				&trans           &trans
@@ -130,6 +130,11 @@
 	};
 
 	behaviors {
+		rrl {
+			feedback-duration = <120>;
+			feedback-wrap-pattern = <65 25 65 25 65>;
+		};
+
 		ltm: layer-tap-momentary {
 			compatible = "zmk,behavior-hold-tap";
 			display-name = "Hold/tap (layer/mouse key)";
@@ -151,13 +156,15 @@
 		};
 
 		sens: p2sm_sensitivity {
-			feedback-duration = <60>;
+			feedback-duration = <120>;
+			feedback-wrap-pattern = <65 25 65 25 65>;
 			step = <50>;
 			max-step = <8>;
 		};
 
 		scrlsens: p2sm_scroll_sensitivity {
-			feedback-duration = <60>;
+			feedback-duration = <120>;
+			feedback-wrap-pattern = <65 25 65 25 65>;
 			step = <10>;
 			min-step = <2>;
 			max-step = <12>;
@@ -165,7 +172,7 @@
 
 		scrlsenstog: p2sm_sens_toggle {
 			display-name = "Scroll sensitivity (toggle 3%/6%)";
-			feedback-duration = <150>;
+			feedback-duration = <120>;
 			step = <30>;
 			min-step = <1>;
 			max-step = <2>;
@@ -175,7 +182,7 @@
 		sens_nowrap: sens_nowrap {
 			compatible = "zmk,behavior-p2sm-sens";
 			#binding-cells = <2>;
-			feedback-duration = <60>;
+			feedback-duration = <75>;
 			step = <50>;
 			min-step = <1>;
 			max-step = <8>;
@@ -184,7 +191,7 @@
 		scrlsens_nowrap: scrlsens_nowrap {
 			compatible = "zmk,behavior-p2sm-sens";
 			#binding-cells = <2>;
-			feedback-duration = <60>;
+			feedback-duration = <75>;
 			step = <10>;
 			min-step = <2>;
 			max-step = <12>;
@@ -201,12 +208,6 @@
 			compatible = "zmk,behavior-sensor-rotate-var";
 			#sensor-binding-cells = <2>;
 			bindings = <&scrlsens_nowrap>, <&scrlsens_nowrap>;
-		};
-
-		rotenc_ug: rotenc_ug {
-			compatible = "zmk,behavior-sensor-rotate-var";
-			#sensor-binding-cells = <2>;
-			bindings = <&rgb_ug>, <&rgb_ug>;
 		};
 	};
 };
