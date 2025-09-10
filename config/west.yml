@@ -18,7 +18,7 @@ manifest:
     - name: zmk-axis-clamper
       remote: efogdev
       revision: main
-    - name: zmk-input-processor-report-rate-limit
+    - name: zmk-report-rate-limit
       remote: efogdev
       revision: main
     - name: zmk-ec11-ish-driver

@@ -52,7 +52,7 @@
 			display-name = "Device";
 			sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp LC(LA(RIGHT)) LC(LA(LEFT))>;
 			bindings = <
-				&rgb_ug RGB_BRD    &rgb_ug RGB_BRI
+				&rgb_off           &rgb_ug RGB_EFF
 				&bt BT_CLR         &bt BT_NXT
 				&rgb_tog           &bt BT_PRV
 				&studio_unlock     &trans
@@ -76,8 +76,8 @@
 			bindings = <
 				&kp LA(F4)       &trans
 				&trans           &trans
-				&rgb_off         &soft_off
-				&rgb_ug RGB_EFF  &trans
+				&trans           &soft_off
+				&trans           &trans
 			>;
 		};
 
@@ -110,7 +110,7 @@
 		rgb_tog: rgb_tog {
 			compatible = "zmk,behavior-macro";
 			#binding-cells = <0>;
-			wait-ms = <50>;
+			wait-ms = <20>;
 			bindings
 			= <&rgb_ug RGB_TOG>
 			, <&ext_power EP_TOG>
@@ -119,9 +119,8 @@
 
 		rgb_off: rgb_off {
 			compatible = "zmk,behavior-macro";
-
 			#binding-cells = <0>;
-			wait-ms = <50>;
+			wait-ms = <20>;
 			bindings
 			= <&ext_power EP_OFF>
 			, <&rgb_ug RGB_OFF>
@@ -131,8 +130,8 @@
 
 	behaviors {
 		rrl {
-			feedback-duration = <120>;
-			feedback-wrap-pattern = <65 25 65 25 65>;
+			values-ms = <8 6 4 2>;
+			feedback-duration = <65>;
 		};
 
 		ltm: layer-tap-momentary {
@@ -156,15 +155,13 @@
 		};
 
 		sens: p2sm_sensitivity {
-			feedback-duration = <120>;
-			feedback-wrap-pattern = <65 25 65 25 65>;
+			feedback-duration = <65>;
 			step = <50>;
 			max-step = <8>;
 		};
 
 		scrlsens: p2sm_scroll_sensitivity {
-			feedback-duration = <120>;
-			feedback-wrap-pattern = <65 25 65 25 65>;
+			feedback-duration = <65>;
 			step = <10>;
 			min-step = <2>;
 			max-step = <12>;
@@ -172,7 +169,7 @@
 
 		scrlsenstog: p2sm_sens_toggle {
 			display-name = "Scroll sensitivity (toggle 3%/6%)";
-			feedback-duration = <120>;
+			feedback-duration = <65>;
 			step = <30>;
 			min-step = <1>;
 			max-step = <2>;
@@ -182,7 +179,9 @@
 		sens_nowrap: sens_nowrap {
 			compatible = "zmk,behavior-p2sm-sens";
 			#binding-cells = <2>;
-			feedback-duration = <75>;
+			feedback-duration = <65>;
+			feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
+			feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
 			step = <50>;
 			min-step = <1>;
 			max-step = <8>;
@@ -191,7 +190,9 @@
 		scrlsens_nowrap: scrlsens_nowrap {
 			compatible = "zmk,behavior-p2sm-sens";
 			#binding-cells = <2>;
-			feedback-duration = <75>;
+			feedback-duration = <65>;
+			feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
+			feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
 			step = <10>;
 			min-step = <2>;
 			max-step = <12>;
