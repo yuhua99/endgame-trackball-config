@@ -79,7 +79,7 @@
 
 	trackball_primary: trackball_primary@0 {
 		status = "okay";
-		compatible = "pixart,pmw3610";
+		compatible = "pixart,pmw3610-efogtech";
 		init-retry-interval = <20>;
 		init-retry-count = <100>;
 		reg = <0>;
@@ -109,7 +109,7 @@
 
 	trackball_secondary: trackball_secondary@0 {
 		status = "okay";
-		compatible = "pixart,pmw3610";
+		compatible = "pixart,pmw3610-efogtech";
 		init-retry-interval = <20>;
 		init-retry-count = <100>;
 		reg = <0>;
