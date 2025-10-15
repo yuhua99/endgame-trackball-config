@@ -217,4 +217,5 @@
 &zip_2s_mixer {
 	twist-interference-thres = <15>;
 	twist-thres = <25>;
+	twist-feedback-duration = <50>;
 };
