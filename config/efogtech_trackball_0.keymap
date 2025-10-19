@@ -216,7 +216,7 @@
 
 &zip_2s_mixer {
 	sync-scroll-report-ms = <8>;
-	twist-interference-thres = <20>;
-	twist-thres = <8>;
+	twist-interference-thres = <5>;
+	twist-thres = <5>;
 	twist-feedback-duration = <50>;
 };
