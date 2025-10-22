@@ -65,7 +65,7 @@
 			sensor-bindings = <&rotenc_sens P2SM_DEC P2SM_INC &rotenc_scrlsens P2SM_INC P2SM_DEC>;
 			bindings = <
 			    &trans              &trans
-			    &trans              &scrlsens P2SM_INC 1
+			    &p2sm_sensor_type   &scrlsens P2SM_INC 1
 			    &rrl 1              &scrlsens P2SM_DEC 1
 			    &sens P2SM_DEC 1    &sens P2SM_INC 1
 			>;
