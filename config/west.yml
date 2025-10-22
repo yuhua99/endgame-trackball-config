@@ -13,8 +13,8 @@ manifest:
       remote: efogdev
       revision: zephyr-4.1
     - name: zmk-pointer-2s-mixer
-      remote: efogdev
-      revision: main
+      remote: yuhua99
+      revision: twist
     - name: zmk-axis-clamper
       remote: efogdev
       revision: main
