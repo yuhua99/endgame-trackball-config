@@ -12,6 +12,7 @@
 	sync-scroll-report-ms = <8>;
 
 	twist-interference-thres = <10>; // CPI and sync-scroll-report-ms dependent
+	twist-interference-window = <100>;
 	twist-thres = <10>; // CPI and sync-scroll-report-ms dependent
 
 	// arbitrary bounding box (0, 0, 0) - (255, 255, 255)
