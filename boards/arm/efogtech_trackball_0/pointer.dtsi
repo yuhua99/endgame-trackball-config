@@ -17,8 +17,8 @@
 
   // arbitrary bounding box (0, 0, 0) - (255, 255, 255)
   ball-radius = <102>; // maximum = 127
-  sensor1-pos = [B7 4B 2D];  // X Y Z
-  sensor2-pos = [27 3C 2D];
+  sensor1-pos = [32 5B 35];  // X Y Z
+  sensor2-pos = [B5 3E 35];
 
   feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
   feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
