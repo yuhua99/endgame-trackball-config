@@ -3,31 +3,46 @@ set -euo pipefail
 
 usage() {
   cat <<'EOF'
-Usage: ./build.sh [--help]
+Usage: ./build.sh [-o DIR] [--help]
 
-  --help   Show this message.
+  -o, --output DIR   Move the primary UF2 artifact to DIR after build completes.
+  --help             Show this message.
 
 The script builds both the primary firmware and the CI snippet (studio-rpc-usb-uart).
 It expects:
   * a Python venv at .venv (created with `uv venv` or similar)
   * Zephyr SDK installed (override ZEPHYR_SDK_INSTALL_DIR if not /root/zephyr-sdk-0.17.4)
 
-Artifacts:
+Artifacts (before moving):
   Primary build UF2    -> build/default/zephyr/zmk.uf2
   Snippet build UF2    -> build/studio-rpc-usb-uart/zephyr/zmk.uf2
 EOF
 }
 
-if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
-  usage
-  exit 0
-fi
+OUTPUT_DIR=""
 
-if [[ $# -gt 0 ]]; then
-  echo "error: unknown option '$1'" >&2
-  usage
-  exit 1
-fi
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    -o|--output)
+      if [[ $# -lt 2 || -z "${2:-}" ]]; then
+        echo "error: '--output' expects a directory path." >&2
+        usage
+        exit 1
+      fi
+      OUTPUT_DIR="$2"
+      shift 2
+      ;;
+    *)
+      echo "error: unknown option '$1'" >&2
+      usage
+      exit 1
+      ;;
+  esac
+done
 
 REPO_ROOT="$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VENV_ACTIVATE="$REPO_ROOT/.venv/bin/activate"
@@ -78,9 +93,20 @@ build_once() {
     -- -DBOARD_ROOT="$REPO_ROOT" -DZMK_CONFIG="$REPO_ROOT/config" "${cmake_args[@]}"
 }
 
-build_once "$REPO_ROOT/build/default"
+PRIMARY_BUILD_DIR="$REPO_ROOT/build/default"
+PRIMARY_UF2="$PRIMARY_BUILD_DIR/zephyr/zmk.uf2"
+
+build_once "$PRIMARY_BUILD_DIR"
 build_once "$REPO_ROOT/build/studio-rpc-usb-uart" -DSNIPPET=studio-rpc-usb-uart
 
+if [[ -n "$OUTPUT_DIR" ]]; then
+  mkdir -p "$OUTPUT_DIR"
+  PRIMARY_DEST="$OUTPUT_DIR/$(basename "$PRIMARY_UF2")"
+  log_step "Moving primary UF2 to $PRIMARY_DEST"
+  mv "$PRIMARY_UF2" "$PRIMARY_DEST"
+  PRIMARY_UF2="$PRIMARY_DEST"
+fi
+
 echo
-echo "Primary UF2: $REPO_ROOT/build/default/zephyr/zmk.uf2"
+echo "Primary UF2: $PRIMARY_UF2"
 echo "Snippet UF2: $REPO_ROOT/build/studio-rpc-usb-uart/zephyr/zmk.uf2"
