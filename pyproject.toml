@@ -1,0 +1,12 @@
+[project]
+name = "endgame-trackball-config"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "grpcio-tools>=1.76.0",
+    "protobuf>=6.33.0",
+    "pyelftools>=0.32",
+    "west>=1.5.0",
+]
