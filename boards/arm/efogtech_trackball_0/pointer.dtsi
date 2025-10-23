@@ -7,126 +7,126 @@
 #include <behaviors/auto_hold.dtsi>
 
 &zip_2s_mixer {
-	status = "okay";
-	sync-report-ms = <1>;
-	sync-scroll-report-ms = <8>;
+  status = "okay";
+  sync-report-ms = <1>;
+  sync-scroll-report-ms = <8>;
 
-	twist-interference-thres = <10>; // CPI and sync-scroll-report-ms dependent
-	twist-interference-window = <100>;
-	twist-thres = <10>; // CPI and sync-scroll-report-ms dependent
+  twist-interference-thres = <10>; // CPI and sync-scroll-report-ms dependent
+  twist-interference-window = <100>;
+  twist-thres = <10>; // CPI and sync-scroll-report-ms dependent
 
-	// arbitrary bounding box (0, 0, 0) - (255, 255, 255)
-	ball-radius = <102>; // maximum = 127
-	sensor1-pos = [31 4B 2D];  // X Y Z
-	sensor2-pos = [C1 3C 2D];
+  // arbitrary bounding box (0, 0, 0) - (255, 255, 255)
+  ball-radius = <102>; // maximum = 127
+  sensor1-pos = [B7 4B 2D];  // X Y Z
+  sensor2-pos = [27 3C 2D];
 
-	feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
-	feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-	twist-feedback-threshold = <150>;
-	twist-feedback-delay = <5>;
-	// twist-feedback-duration = <50>;
+  feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
+  feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+  twist-feedback-threshold = <150>;
+  twist-feedback-delay = <5>;
+  // twist-feedback-duration = <50>;
 };
 
 / {
-	behaviors {
-		rrl {
-			feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
-			feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-		};
+  behaviors {
+    rrl {
+      feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
+      feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+    };
 
-		p2sm_sensitivity {
-			feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
-			feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-		};
+    p2sm_sensitivity {
+      feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
+      feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+    };
 
-		p2sm_scroll_sensitivity {
-			feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
-			feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-		};
+    p2sm_scroll_sensitivity {
+      feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
+      feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+    };
 
-		p2sm_sens_toggle {
-			feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
-			feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-		};
-	};
+    p2sm_sens_toggle {
+      feedback-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
+      feedback-extra-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+    };
+  };
 
-	trackball {
-		compatible = "zmk,input-listener";
-		device = <&zip_2s_mixer>;
-		input-processors = <&zip_ble_report_rate_limit>;
-	};
+  trackball {
+    compatible = "zmk,input-listener";
+    device = <&zip_2s_mixer>;
+    input-processors = <&zip_ble_report_rate_limit>;
+  };
 
-	trackball_primary_listener: trackball_primary_listener {
-		compatible = "zmk,input-listener";
-		device = <&trackball_primary>;
-		input-processors = <&zip_2s_mixer INPUT_MIXER_SENSOR1>;
-	};
+  trackball_primary_listener: trackball_primary_listener {
+    compatible = "zmk,input-listener";
+    device = <&trackball_primary>;
+    input-processors = <&zip_2s_mixer INPUT_MIXER_SENSOR1>;
+  };
 
-	trackball_secondary_listener: trackball_secondary_listener {
-		compatible = "zmk,input-listener";
-		device = <&trackball_secondary>;
-		input-processors = <&zip_2s_mixer INPUT_MIXER_SENSOR2>;
-	};
+  trackball_secondary_listener: trackball_secondary_listener {
+    compatible = "zmk,input-listener";
+    device = <&trackball_secondary>;
+    input-processors = <&zip_2s_mixer INPUT_MIXER_SENSOR2>;
+  };
 };
 
 // left sensor
 &spi0 {
-	status = "okay";
-	compatible = "nordic,nrf-spim";
-	pinctrl-0 = <&spi0_default>;
-	pinctrl-1 = <&spi0_sleep>;
-	pinctrl-names = "default", "sleep";
-	cs-gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;
-	clock-frequency = <2000000>;
+  status = "okay";
+  compatible = "nordic,nrf-spim";
+  pinctrl-0 = <&spi0_default>;
+  pinctrl-1 = <&spi0_sleep>;
+  pinctrl-names = "default", "sleep";
+  cs-gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;
+  clock-frequency = <2000000>;
 
-	trackball_primary: trackball_primary@0 {
-		status = "okay";
-		compatible = "pixart,pmw3610-efogtech";
-		init-retry-interval = <20>;
-		init-retry-count = <100>;
-		reg = <0>;
-		spi-max-frequency = <2000000>;
-		irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-		cpi = <800>;
-		evt-type = <INPUT_EV_REL>;
-		x-input-code = <INPUT_REL_X>;
-		y-input-code = <INPUT_REL_Y>;
+  trackball_primary: trackball_primary@0 {
+    status = "okay";
+    compatible = "pixart,pmw3610-efogtech";
+    init-retry-interval = <20>;
+    init-retry-count = <100>;
+    reg = <0>;
+    spi-max-frequency = <2000000>;
+    irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+    cpi = <800>;
+    evt-type = <INPUT_EV_REL>;
+    x-input-code = <INPUT_REL_X>;
+    y-input-code = <INPUT_REL_Y>;
 
-		force-awake;
-		force-high-performance;
-		xy-swap;
-		x-invert;
-		y-invert;
-	};
+    force-awake;
+    force-high-performance;
+    xy-swap;
+    x-invert;
+    y-invert;
+  };
 };
 
 // right sensor
 &spi1 {
-	status = "okay";
-	compatible = "nordic,nrf-spim";
-	pinctrl-0 = <&spi1_default>;
-	pinctrl-1 = <&spi1_sleep>;
-	pinctrl-names = "default", "sleep";
-	cs-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
-	clock-frequency = <2000000>;
+  status = "okay";
+  compatible = "nordic,nrf-spim";
+  pinctrl-0 = <&spi1_default>;
+  pinctrl-1 = <&spi1_sleep>;
+  pinctrl-names = "default", "sleep";
+  cs-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
+  clock-frequency = <2000000>;
 
-	trackball_secondary: trackball_secondary@0 {
-		status = "okay";
-		compatible = "pixart,pmw3610-efogtech";
-		init-retry-interval = <20>;
-		init-retry-count = <100>;
-		reg = <0>;
-		spi-max-frequency = <2000000>;
-		irq-gpios = <&gpio1 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-		rst-gpios = <&gpio1 6 GPIO_ACTIVE_LOW>;
-		cpi = <800>;
-		evt-type = <INPUT_EV_REL>;
-		x-input-code = <INPUT_REL_X>;
-		y-input-code = <INPUT_REL_Y>;
+  trackball_secondary: trackball_secondary@0 {
+    status = "okay";
+    compatible = "pixart,pmw3610-efogtech";
+    init-retry-interval = <20>;
+    init-retry-count = <100>;
+    reg = <0>;
+    spi-max-frequency = <2000000>;
+    irq-gpios = <&gpio1 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+    rst-gpios = <&gpio1 6 GPIO_ACTIVE_LOW>;
+    cpi = <800>;
+    evt-type = <INPUT_EV_REL>;
+    x-input-code = <INPUT_REL_X>;
+    y-input-code = <INPUT_REL_Y>;
 
-		force-awake;
-		force-high-performance;
-		xy-swap;
-		enable-pm-support;
-	};
+    force-awake;
+    force-high-performance;
+    xy-swap;
+    enable-pm-support;
+  };
 };
