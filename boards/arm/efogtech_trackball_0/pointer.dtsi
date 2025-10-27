@@ -10,7 +10,7 @@
   status = "okay";
   sync-report-ms = <1>;
   sync-scroll-report-ms = <8>;
-  twist-interference-thres = <300>; // CPI and sync-scroll-report-ms dependent
+  twist-interference-thres = <250>; // CPI and sync-scroll-report-ms dependent
   twist-interference-window = <96>;
   twist-thres = <10>; // CPI and sync-scroll-report-ms dependent
 
