@@ -11,9 +11,9 @@
 	sync-report-ms = <1>;
 
 	sync-scroll-report-ms = <8>;
-	twist-thres = <5>;
+	twist-thres = <3>;
 	twist-interference-thres = <150>;
-	twist-interference-window = <80>;
+	twist-interference-window = <56>;
 
 	// arbitrary bounding box (0, 0, 0) - (255, 255, 255)
 	ball-radius = <102>; // maximum = 127
