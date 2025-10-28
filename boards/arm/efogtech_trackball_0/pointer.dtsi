@@ -10,9 +10,9 @@
   status = "okay";
   sync-report-ms = <1>;
   sync-scroll-report-ms = <8>;
-  twist-interference-thres = <250>; // CPI and sync-scroll-report-ms dependent
-  twist-interference-window = <96>;
-  twist-thres = <10>; // CPI and sync-scroll-report-ms dependent
+  twist-interference-thres = <150>; // CPI and sync-scroll-report-ms dependent
+  twist-interference-window = <56>;
+  twist-thres = <3>; // CPI and sync-scroll-report-ms dependent
 
   // arbitrary bounding box (0, 0, 0) - (255, 255, 255)
   ball-radius = <102>; // maximum = 127
