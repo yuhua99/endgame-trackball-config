@@ -12,7 +12,7 @@
 
 	sync-scroll-report-ms = <8>;
 	twist-thres = <3>;
-	twist-interference-thres = <150>;
+	twist-interference-thres = <180>;
 	twist-interference-window = <56>;
 
 	twist-thres = <3>;
