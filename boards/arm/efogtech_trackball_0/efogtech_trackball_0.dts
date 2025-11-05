@@ -78,19 +78,15 @@
         transform = <&default_transform>;
         kscan = <&kscan0>;
 
-		// encoder switches:
-		//        = <&key_physical_attrs 120  120  95   80   0    120  120>
-		//        , <&key_physical_attrs 120  120  611  80   0    120  120>
-
-        keys  //               w    h   x   y   rot rx ry
-        = <&key_physical_attrs 160  80   177  275  0    0    0  >
-		, <&key_physical_attrs 160  80   489  275  0    0    0  >
-		, <&key_physical_attrs 80   160  80   347  0    0    0  >
-		, <&key_physical_attrs 80   160  666  347  0    0    0  >
-		, <&key_physical_attrs 80   160  80   676  0    0    0  >
-		, <&key_physical_attrs 80   160  666  676  0    0    0  >
-		, <&key_physical_attrs 160  80   177  870  0    0    0  >
-		, <&key_physical_attrs 160  80   489  870  0    0    0  >
+        keys  //               w     h     x     y     rot  rx   ry
+		= <&key_physical_attrs 200   150   200   0     0    8    8  >
+		, <&key_physical_attrs 200   150   450   0     0    8    8  >
+		, <&key_physical_attrs 150   375   0     25    0    8    8  >
+		, <&key_physical_attrs 150   375   700   25    0    8    8  >
+		, <&key_physical_attrs 150   375   0     450   0    8    8  >
+		, <&key_physical_attrs 150   375   700   450   0    8    8  >
+		, <&key_physical_attrs 200   150   200   700   0    8    8  >
+		, <&key_physical_attrs 200   150   450   700   0    8    8  >
         ;
     };
 
