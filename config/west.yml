@@ -30,5 +30,8 @@ manifest:
     - name: zmk-trigger-on-boot
       remote: efogdev
       revision: main
+    - name: zmk-behavior-follower
+      remote: efogdev
+      revision: main
   self:
     path: config
