@@ -2,5 +2,45 @@ name: Build ZMK firmware
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
+  meta:
+    name: Prepare release metadata
+    runs-on: ubuntu-latest
+    outputs:
+      release_date: ${{ steps.release_date.outputs.value }}
+      archive_name: ${{ steps.archive_name.outputs.value }}
+    steps:
+      - name: Set release date
+        id: release_date
+        run: echo "value=$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
+      - name: Set archive name
+        id: archive_name
+        run: echo "value=endgame-${{ steps.release_date.outputs.value }}-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+
   build:
+    needs: meta
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3.0
+    with:
+      archive_name: ${{ needs.meta.outputs.archive_name }}
+
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+    needs: [meta, build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    steps:
+      - name: Download firmware artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+          merge-multiple: true
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.meta.outputs.archive_name }}
+          name: "Endgame ${{ needs.meta.outputs.release_date }} #${{ github.run_number }}"
+          files: |
+            ./*.uf2
+          draft: false
+          prerelease: false
