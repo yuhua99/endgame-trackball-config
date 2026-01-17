@@ -33,7 +33,7 @@
 			bindings = <
 				// buttons
 				&ltmkp LAYER_SNIPE ENTER  &ltmkp LAYER_SCROLL ESC
-				&mkp MCLK                 &kp DELETE
+				&mkp MCLK                 &mkp RCLK
 				&mkp LCLK                 &mkp RCLK
 				&ltm LAYER_EXTRAS MB4     &ltm LAYER_DEVICE MB5
 
