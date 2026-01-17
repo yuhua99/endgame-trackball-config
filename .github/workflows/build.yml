@@ -6,15 +6,27 @@ jobs:
     name: Prepare release metadata
     runs-on: ubuntu-latest
     outputs:
-      release_date: ${{ steps.release_date.outputs.value }}
+      release_version: ${{ steps.release_version.outputs.value }}
       archive_name: ${{ steps.archive_name.outputs.value }}
     steps:
-      - name: Set release date
-        id: release_date
-        run: echo "value=$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Read release version
+        id: release_version
+        run: |
+          set -euo pipefail
+          defconfig="boards/arm/efogtech_trackball_0/efogtech_trackball_0_defconfig"
+          major=$(grep -E '^CONFIG_BOARD_EFOGTECH_0_VER_MAJOR=' "$defconfig" | cut -d= -f2)
+          minor=$(grep -E '^CONFIG_BOARD_EFOGTECH_0_VER_MINOR=' "$defconfig" | cut -d= -f2)
+          patch=$(grep -E '^CONFIG_BOARD_EFOGTECH_0_VER_PATCH=' "$defconfig" | cut -d= -f2)
+          if [ -z "$major" ] || [ -z "$minor" ] || [ -z "$patch" ]; then
+            echo "Version not found in $defconfig" >&2
+            exit 1
+          fi
+          echo "value=endgame-${major}.${minor}.${patch}" >> "$GITHUB_OUTPUT"
       - name: Set archive name
         id: archive_name
-        run: echo "value=endgame-${{ steps.release_date.outputs.value }}-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+        run: echo "value=${{ steps.release_version.outputs.value }}" >> "$GITHUB_OUTPUT"
 
   build:
     needs: meta
@@ -39,7 +51,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.meta.outputs.archive_name }}
-          name: "Endgame ${{ needs.meta.outputs.release_date }} #${{ github.run_number }}"
+          name: "${{ needs.meta.outputs.archive_name }}"
           files: |
             ./*.uf2
           draft: false
