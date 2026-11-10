@@ -2,6 +2,8 @@ manifest:
   remotes:
     - name: efogdev
       url-base: https://github.com/efogdev
+    - name: yuhua99
+      url-base: https://github.com/yuhua99
   projects:
     - name: zmk
       remote: efogdev
@@ -32,8 +34,8 @@ manifest:
       remote: efogdev
       revision: "c27fe57"
     - name: zmk-keymap-shell
-      remote: efogdev
-      revision: "b712a64"
+      remote: yuhua99
+      revision: "b0dc583"
     - name: zmk-acceleration-curves
       remote: efogdev
       revision: "09a49e1"
